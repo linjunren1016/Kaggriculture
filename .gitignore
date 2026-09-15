@@ -14,3 +14,6 @@ episode.json
 
 # 虚拟环境
 .venv/
+
+# Word 临时锁文件
+~$*
