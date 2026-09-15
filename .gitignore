@@ -21,3 +21,7 @@ episode.json
 # 线上回放（体积大，且可从 Kaggle 重新下载）
 replays/
 
+
+# 参考 agent 源（第三方 MIT/CC-BY-SA 资源，可从 Kaggle 重新下载）
+opponents_src/
+
