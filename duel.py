@@ -29,12 +29,15 @@ def main():
                     help="set to 'pass' to measure A's absolute money instead")
     ap.add_argument("--episodes", type=int, default=5)
     ap.add_argument("--steps", type=int, default=720)
+    ap.add_argument("--seed-base", type=int, default=3000,
+                    help="seeds are seed-base + i; use the same value to compare "
+                         "configurations on identical maps")
     args = ap.parse_args()
 
     lines = []
     a_first, b_first = [], []   # a 作为座位0 / a 作为座位1
     for i in range(args.episodes):
-        seed = 3000 + i
+        seed = args.seed_base + i
         am, bm, s0, s1 = one(args.a, args.b, seed, args.steps)
         if s0 == "DONE" and s1 == "DONE":
             a_first.append((am, bm))

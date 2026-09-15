@@ -17,3 +17,7 @@ episode.json
 
 # Word 临时锁文件
 ~$*
+
+# 线上回放（体积大，且可从 Kaggle 重新下载）
+replays/
+
