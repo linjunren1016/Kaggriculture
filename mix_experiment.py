@@ -1,4 +1,4 @@
-"""
+﻿"""
 作物配比实验：参数化 TARGET_MIX，在留出种子上严格对比。
 
 背景
@@ -27,25 +27,22 @@ BASE_MIX = [
 ]
 
 CANDIDATES = {
-    "原配比 m.24/t.12": [
-        ("WHEAT", 0.34), ("MELON", 0.24), ("CARROT", 0.22),
-        ("TOMATO", 0.12), ("STRAWBERRY", 0.08),
-    ],
-    "候选A  m.40/t.20": [
+    "当前     m.40/t.20": [
         ("WHEAT", 0.18), ("MELON", 0.40), ("CARROT", 0.14),
         ("TOMATO", 0.20), ("STRAWBERRY", 0.08),
     ],
-    "候选B  m.42/t.20": [
-        ("WHEAT", 0.18), ("MELON", 0.42), ("CARROT", 0.12),
-        ("TOMATO", 0.20), ("STRAWBERRY", 0.08),
+    "甜瓜60   无番茄草莓": [
+        # ZZWD_ 线上配方的方向：零番茄零草莓，甜瓜 60%
+        ("WHEAT", 0.25), ("MELON", 0.60), ("CARROT", 0.15),
+        ("TOMATO", 0.0), ("STRAWBERRY", 0.0),
     ],
-    "候选C  m.40/t.22": [
-        ("WHEAT", 0.16), ("MELON", 0.40), ("CARROT", 0.14),
-        ("TOMATO", 0.22), ("STRAWBERRY", 0.08),
+    "甜瓜55   无番茄草莓": [
+        ("WHEAT", 0.28), ("MELON", 0.55), ("CARROT", 0.17),
+        ("TOMATO", 0.0), ("STRAWBERRY", 0.0),
     ],
-    "候选D  m.38/t.20": [
-        ("WHEAT", 0.20), ("MELON", 0.38), ("CARROT", 0.14),
-        ("TOMATO", 0.20), ("STRAWBERRY", 0.08),
+    "甜瓜60   留草莓": [
+        ("WHEAT", 0.22), ("MELON", 0.60), ("CARROT", 0.13),
+        ("TOMATO", 0.0), ("STRAWBERRY", 0.05),
     ],
 }
 
@@ -83,7 +80,7 @@ def main():
         lines.append(f"{name:<26} 平均 ${statistics.mean(outs):>9,.0f}  "
                      f"最低 ${min(outs):>9,.0f}  最高 ${max(outs):>9,.0f}")
 
-    base_name = "原配比 m.24/t.12"
+    base_name = "当前     m.40/t.20"
     base = results[base_name]
     lines.append("")
     lines.append(f"相对{base_name}：")
