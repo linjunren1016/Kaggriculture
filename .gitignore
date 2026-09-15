@@ -1,0 +1,16 @@
+﻿# 本地临时目录
+__pycache__/
+_docx/
+_chk/
+replays/
+*.zip
+
+# 大文件 / 派生数据
+kaggriculture.zip
+submission.tar.gz
+benchmark_results.json
+tune_results.json
+episode.json
+
+# 虚拟环境
+.venv/
