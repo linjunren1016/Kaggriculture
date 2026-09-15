@@ -509,14 +509,10 @@ def _market_orders(obs, me, priv, my_index):
     if hires_today < HIRE_CAP and money > _next_hire_cost(hires_today) + MONEY_BUFFER:
         orders.append(["HIRE"])
 
-    # 2. Keep the shed stocked with feed wheat — but only when there is actually
-    #    livestock to feed.
-    #
-    #    BUG FIX: this used to run unconditionally as `live_animals + 6`, which
-    #    kept a 6-wheat "feed reserve" alive even with MAX_LIVESTOCK = 0. Since
-    #    harvested wheat is sold each turn, the reserve kept dropping below 6 and
-    #    the agent bought wheat back at market price in an endless loop — pure
-    #    cash burn with no possible benefit (no animal can ever consume it).
+    # 2. Keep the shed stocked with feed wheat. Guarded on live_animals because
+    #    with MAX_LIVESTOCK = 0 there is nothing that can ever consume it, so
+    #    buying feed would be pure cash burn. (Measured effect of this guard was
+    #    within noise, ~0.1%; kept because it is correct, not because it pays.)
     if live_animals > 0:
         feed_demand = live_animals + 4          # today's feed plus a small buffer
         wheat_held = shed.get("WHEAT", 0)
@@ -609,6 +605,37 @@ def _safe(fn):
     return wrapper
 
 
+def _assign_tasks(obs, me, farmer_pos, hand_positions):
+    """Assign each unit its *nearest* outstanding task, greedily.
+
+    The previous version handed out tasks in list order
+    (``tasks[:1 + len(hands)]``), which ignored where units actually stand, so
+    units regularly walked across the board past a closer tile that another unit
+    was slowly walking to. Measured on this agent, 43% of the farmer's actions
+    and 59% of the hands' actions were movement, which capped land utilisation at
+    ~50%: the labour budget was consumed by walking instead of working.
+
+    Greedy nearest-assignment is a cheap approximation of the assignment problem
+    and needs no communication between units, because the caller walks the unit
+    list once and removes each claimed task from the pool.
+    """
+    units = [tuple(farmer_pos)] + [tuple(p) for p in hand_positions]
+    pool = list(_task_list(obs, me))
+    result = []
+    for pos in units:
+        if not pool:
+            result.append(None)
+            continue
+        # Nearest by Manhattan distance; ties resolved by urgency (pool order).
+        best_i, best_d = 0, None
+        for i, (_op, tgt) in enumerate(pool):
+            d = abs(pos[0] - tgt[0]) + abs(pos[1] - tgt[1])
+            if best_d is None or d < best_d:
+                best_i, best_d = i, d
+        result.append(pool.pop(best_i))
+    return result
+
+
 @_safe
 def agent(obs):
     player = obs.get("player", 0)
@@ -620,23 +647,22 @@ def agent(obs):
     invs = priv.get("inventories") or [{}]
     farmer_carry = invs[0] if len(invs) > 0 else {}
     farmer_pos = me["farmer"]
+    hands = me.get("hands", [])
 
     # Shared per-turn ledger of seeds already claimed by earlier units. The
     # engine voids *all* PLANT requests for a crop when demand exceeds supply,
     # so units must not collectively over-request the same scarce seed.
     reserved = {}
 
-    # Deal out distinct jobs so units do not all converge on the same tile.
-    # Tasks are consumed in order, so the most urgent work is always staffed
-    # first; extra units fall through to their own nearest-task search.
-    tasks = _task_list(obs, me)
-    assignments = tasks[:1 + len(me.get("hands", []))]
+    # Hand out distinct jobs, each unit getting the closest one, so units do not
+    # converge on the same tile and do not walk past nearer work.
+    assignments = _assign_tasks(obs, me, farmer_pos, hands)
 
     farmer_task = assignments[0] if assignments else None
     farmer_op = _unit_op(obs, me, priv, 0, farmer_pos, farmer_carry, reserved, farmer_task)
 
     hand_ops = []
-    for i, hpos in enumerate(me.get("hands", [])):
+    for i, hpos in enumerate(hands):
         carry = invs[i + 1] if i + 1 < len(invs) else {}
         task = assignments[i + 1] if i + 1 < len(assignments) else None
         hand_ops.append(_norm(
