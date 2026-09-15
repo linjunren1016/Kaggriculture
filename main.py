@@ -41,7 +41,7 @@ Design notes, each traceable to the engine source (kaggriculture.py):
 
 import functools
 
-HIRE_CAP = 6                 # swept 4/6/8/10/12: 6 maximises mean season money
+HIRE_CAP = 8                 # 12-seed held-out test: +13.8% money vs 6, won 10/12
 # Livestock is disabled by default. Measured over full seeded seasons against
 # the built-in `starter`, a livestock-heavy policy scored ~$690 while the same
 # agent with animals off scored ~$20,700. The reason is labour, not margin:
