@@ -11,7 +11,10 @@
 
 | submission | 提交时间 | 归档文件 | sha256(前16) | 机制 | 线上分 | 判定 |
 |---|---|---|---|---|---|---|
-| 56268283 | 2026-09-16 03:27 | `56268283__subramanya_108075223_s1.py` | `3177EFA6BB9F2D04` | **Subramanya N** 的录像动作表（ep108075223 座位1）+ V38 修复/护栏层 | **1776.7**（峰值 1784.9） | ★ **目前最佳** |
+| 56276676 | 2026-09-16 10:44 | `56276676__michael_108056090_s0.py` | `58f0c9bd02673897` | Michael Shihong Zhang 单表 + 修复层（与赢家相似度 81.8%） | 待观察 | 30 分钟快筛中 |
+| 56276674 | 2026-09-16 10:43 | `56276674__tllswelp_108089814_s0.py` | `e82c17221bdc9da4` | tllswelp 单表 + 修复层（83.9%） | 待观察 | 30 分钟快筛中 |
+| 56276673 | 2026-09-16 10:43 | `56276673__zhongyi_108062853_s1.py` | `722d95925f50e072` | Zhongyi Dai 单表 + 修复层（84.0%） | 待观察 | 30 分钟快筛中 |
+| 56268283 | 2026-09-16 03:27 | `56268283__subramanya_108075223_s1.py` | `3177EFA6BB9F2D04` | **Subramanya N** 的录像动作表（ep108075223 座位1）+ V38 修复/护栏层 | **1767.3**（峰值 1784.9） | ★ **目前最佳** |
 | 56250957 | 2026-09-15 09:24 | `56250957__v38_kawashigi_adaptive.py` | `F34A54B960A0EBD3` | V38 本体（预录动作表，来自第三方公开 notebook） | 1152.7 | 被 56268283 取代 |
 | 56249501 | 2026-09-15 08:06 | 未识别 | — | — | 960.6 | — |
 | 56248341 | 2026-09-15 07:00 | 未识别 | — | — | 766.1 | — |
@@ -44,19 +47,17 @@ kaggle competitions submit kaggriculture -f submission.tar.gz -m "备注"
 
 选表依据：现有赢家（Subramanya N）的**风格族** —— 取与它相似度最高的三张**非同源**表，另加一位天梯确认高分的选手。
 
-| 包 | 来源 | 与赢家相似度 | main.py sha256(前16) |
-|---|---|---|---|
-| `A1_zhongyi_108062853_s1.tar.gz` | Zhongyi Dai | 84.0% | `722d95925f50e072` |
-| `A2_tllswelp_108089814_s0.tar.gz` | tllswelp | 83.9% | `e82c17221bdc9da4` |
-| `A3_michael_108056090_s0.tar.gz` | Michael Shihong Zhang | 81.8% | `58f0c9bd02673897` |
-| `A4_yjshyfy.tar.gz` | yjshyfy（天梯确认 2957.8） | 76.1% | `a1425b960d3b8396` |
+| 包 | 来源 | 与赢家相似度 | main.py sha256(前16) | 提交结果 |
+|---|---|---|---|---|
+| `56276673__zhongyi_108062853_s1.tar.gz` | Zhongyi Dai | 84.0% | `722d95925f50e072` | ✅ ref 56276673 |
+| `56276674__tllswelp_108089814_s0.tar.gz` | tllswelp | 83.9% | `e82c17221bdc9da4` | ✅ ref 56276674 |
+| `56276676__michael_108056090_s0.tar.gz` | Michael Shihong Zhang | 81.8% | `58f0c9bd02673897` | ✅ ref 56276676 |
+| `to_submit/A4_yjshyfy.tar.gz` | yjshyfy（天梯确认 2957.8） | 76.1% | `a1425b960d3b8396` | ⏳ **未提交：当日 5 份配额已用尽** |
 
-四个**并行**提交，30 分钟后按爬升速度筛：
+A4 待次日 UTC 零点后提交：
 
 ```bash
-for f in submissions/to_submit/*.tar.gz; do
-  kaggle competitions submit kaggriculture -f "$f" -m "$(basename "$f" .tar.gz)"
-done
+kaggle competitions submit kaggriculture -f submissions/to_submit/A4_yjshyfy.tar.gz -m "A4 yjshyfy"
 ```
 
 ## 新增一版的做法
@@ -113,6 +114,15 @@ done
    原因：农场动作固定 → 产出固定；**卖单时机也固定** → 收入完全取决于对手是否砸价。
    在它自己的分数段里没人砸价，换个环境就崩。所以「固定单表」的天花板不由农场计划好坏决定，
    而由卖单时机是否撞上对手的市场决定。
+
+7. **每天只能交 5 份**（规则 2.SUBMISSION LIMITS：「You may submit a maximum of five (5)
+   Submissions per day」）。超额时 CLI 报的是 `400 Client Error: Bad Request ... CreateSubmission`，
+   看着像包有问题，其实是配额。**批量提交前先数一下当天已交几份**（`kaggle competitions
+   submissions kaggriculture`，注意按 UTC 日期算）。
+   只有**提交过的版本**才有分数；`_docx/` 下的本地反事实评测一律不算数。
+
+8. **线上爬升要等，不要提前下结论。** 实测同一份提交：半小时 1181.8 → 一小时 1280.3，仍在涨。
+   判断一份候选至少要等到 1 小时以上，且必须和同期基准比（赢家那版半小时到 1300）。
 
 ## 不进版本库的东西
 
