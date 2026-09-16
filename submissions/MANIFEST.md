@@ -77,9 +77,19 @@ kaggle competitions submit kaggriculture -f submission.tar.gz -m "备注"
 
 `origin` = https://github.com/linjunren1016/Kaggriculture
 
-**注意**：本机网络**阻断 `github.com:443`**（TCP 直连超时），但 `api.github.com` 可达。
-所以 `git push` 需要先开代理（本机 Clash 配置在 `127.0.0.1:7897`，默认未启动），例如：
+**本机网络阻断 `github.com:443`**（TCP 直连超时），但 `api.github.com` / `codeload.github.com` 可达。
+所以 push 必须走代理。已在本仓库配好 **repo-local** 代理（不动全局 git 配置）：
 
 ```bash
-git -c http.proxy=http://127.0.0.1:7897 push -u origin master
+git -C <repo> config http.proxy            # -> http://127.0.0.1:7897
+```
+
+**推之前先确认代理软件是开着的**（Clash 默认端口 7897）。代理关着时 `git push` 会报
+`Failed to connect to github.com port 443 via 127.0.0.1`，那不是仓库问题，开代理即可。
+
+日常提交：
+
+```bash
+git add -A && git commit -m "submit: <ref> <机制> <分数>"
+git push
 ```
