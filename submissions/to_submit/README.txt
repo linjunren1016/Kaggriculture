@@ -1,0 +1,4 @@
+A1_zhongyi_108062853_s1.tar.gz	104525 B	main.py sha256=722d95925f50e07249947205835d47a5a636f3fa25c8e1f864d79e411061fe75	Zhongyi Dai ep108062853 seat1
+A2_tllswelp_108089814_s0.tar.gz	104540 B	main.py sha256=e82c17221bdc9da426e703c25795c7039e498194bbb90de5e0f71234eff01b32	tllswelp ep108089814 seat0
+A3_michael_108056090_s0.tar.gz	104296 B	main.py sha256=58f0c9bd026738977c4f5ccd3213a75dbd547ca3fca2c44801c8f295297c9b9a	Michael Shihong Zhang ep108056090 seat0
+A4_yjshyfy.tar.gz	105627 B	main.py sha256=a1425b960d3b8396bcb5f612e2ba349a7a7a124b9ac00031f59474bb5f532c14	yjshyfy recorded table (leaderboard 2957.8)
