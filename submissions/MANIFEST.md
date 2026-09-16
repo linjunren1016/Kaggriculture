@@ -7,6 +7,36 @@
 
 ---
 
+## ★ 目前最佳：56268283（1767.3）
+
+**要复现或重新提交，就用这一份。** 这是 2026-09-16 03:27 提交、全队最高分的那一版。
+
+| 项 | 值 |
+|---|---|
+| 源码 | `submissions/56268283__subramanya_108075223_s1.py`（284,782 字节） |
+| 提交原件 | `submissions/56268283.tar.gz`（105,401 字节，内含唯一文件 `main.py`） |
+| main.py sha256 | `3177EFA6BB9F2D04AE40DB84A07139653610CB0F64FEE9B05382B417032A958C` |
+| tar.gz sha256 | `CCCE4E9F9CE389546E2638154CCDBADB2E7BD56ED8ECC34A04B14C18F439DC0C` |
+| 结构 | V38 的 `main.py` 正文（149,042 字节，未改）＋ 末尾追加一段覆盖：`_TABLE_OVERRIDE` = **Subramanya N** 在 `ep108075223 座位1` 的 720 步录像（已按 +1 错位烘入），入口 `_table_entry` |
+| 线上分 | **1767.3**（峰值 1784.9） |
+
+重新提交：
+
+```bash
+kaggle competitions submit kaggriculture -f submissions/56268283.tar.gz -m "best known: 56268283"
+```
+
+校验下载是否完整（sha256 必须与上表一致）：
+
+```bash
+sha256sum submissions/56268283.tar.gz
+```
+
+⚠️ 注意历史文件名 `candidates/T_adarsh_repair.py` 是**同一个文件**（sha256 相同），但那个名字是错的 ——
+它里面是 **Subramanya N** 的表，不是 ADARSH 的。已按新名字归档。
+
+---
+
 ## 提交记录
 
 | submission | 提交时间 | 归档文件 | sha256(前16) | 机制 | 线上分 | 判定 |
